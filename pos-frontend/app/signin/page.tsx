@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Mail, Lock, User, Eye, EyeOff, Home } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 export default function SignIn() {
+    const { t } = useLanguage();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
@@ -48,7 +50,7 @@ export default function SignIn() {
                         </div>
 
                         <p className="text-gray-600 dark:text-gray-400 text-[15px]">
-                            Sign in to your account
+                            {t.common.signInAccount}
                         </p>
                     </div>
 
@@ -58,7 +60,7 @@ export default function SignIn() {
                         {/* Name Field */}
                         <div className="mb-4">
                             <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                                Full Name
+                                {t.common.fullName}
                             </label>
                             <div className="relative">
                                 <User className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
@@ -67,7 +69,7 @@ export default function SignIn() {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleInputChange}
-                                    placeholder="Enter your name"
+                                    placeholder={t.common.enterName}
                                     className="pl-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                             </div>
@@ -76,7 +78,7 @@ export default function SignIn() {
                         {/* Email Field */}
                         <div className="mb-4">
                             <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                                Email Address
+                                {t.common.emailAddress}
                             </label>
                             <div className="relative">
                                 <Mail className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
@@ -85,7 +87,7 @@ export default function SignIn() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    placeholder="Enter your email"
+                                    placeholder={t.common.enterEmail}
                                     className="pl-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                             </div>
@@ -94,7 +96,7 @@ export default function SignIn() {
                         {/* Password Field */}
                         <div className="mb-4">
                             <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                                Password
+                                {t.common.password}
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
@@ -103,7 +105,7 @@ export default function SignIn() {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleInputChange}
-                                    placeholder="Enter your password"
+                                    placeholder={t.common.enterPassword}
                                     className="pl-10 pr-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                                 <button
@@ -123,7 +125,7 @@ export default function SignIn() {
                         {/* Confirm Password Field */}
                         <div className="mb-4">
                             <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-                                Confirm Password
+                                {t.common.confirmPassword}
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
@@ -132,7 +134,7 @@ export default function SignIn() {
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
                                     onChange={handleInputChange}
-                                    placeholder="Confirm your password"
+                                    placeholder={t.common.confirmYourPassword}
                                     className="pl-10 pr-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                                 <button
@@ -161,7 +163,7 @@ export default function SignIn() {
                                     className="w-3 h-3 border border-gray-300 rounded bg-white dark:bg-gray-700 dark:border-gray-600 cursor-pointer accent-[#27AA83]"
                                 />
                                 <span className="text-sm text-gray-700 dark:text-gray-300">
-                                    Remember me
+                                    {t.common.rememberMe}
                                 </span>
                             </label>
 
@@ -169,7 +171,7 @@ export default function SignIn() {
                                 href="/forgot-password"
                                 className="text-[13px] text-[#27AA83] hover:text-[#209a75] hover:underline underline-offset-2 decoration-[#27AA83] font-semibold transition-colors"
                             >
-                                Forgot Password?
+                                {t.common.forgotPassword}
                             </Link>
                         </div>
 
@@ -178,7 +180,7 @@ export default function SignIn() {
                             type="submit"
                             className="w-full h-11 bg-[#27AA83] hover:bg-[#209a75] text-white font-semibold rounded-lg transition-colors mb-3 cursor-pointer"
                         >
-                            Sign In
+                            {t.common.signIn}
                         </Button>
                     </form>
                 </div>

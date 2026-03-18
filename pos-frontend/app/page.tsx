@@ -9,11 +9,13 @@ import { products, customers, suppliers, orders, expenses, salesData, monthlySal
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
 const item = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 export default function Dashboard() {
+  const { t } = useLanguage();
   const [sortConfig, setSortConfig] = useState<{ key: keyof typeof orders[0] | null; direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
   
   // Pagination state
@@ -51,18 +53,18 @@ export default function Dashboard() {
   const profit = monthlySales - totalPurchaseCost - totalExpenses;
 
   const stats = [
-    { label: 'Total Products', value: products.length, icon: Package, bgColor: 'bg-green-200', iconColor: 'text-green-600' },
-    { label: 'Total Customers', value: customers.length, icon: Users, bgColor: 'bg-blue-200', iconColor: 'text-blue-600' },
-    { label: 'Total Suppliers', value: suppliers.length, icon: Truck, bgColor: 'bg-yellow-200', iconColor: 'text-yellow-600' },
-    { label: "Today's Sales", value: `$${todaySales.toLocaleString()}`, icon: ShoppingCart, bgColor: 'bg-teal-200', iconColor: 'text-teal-600' },
-    { label: 'Monthly Sales', value: `$${monthlySales.toLocaleString()}`, icon: DollarSign, bgColor: 'bg-indigo-200', iconColor: 'text-indigo-600' },
-    { label: 'Total Expenses', value: `$${totalExpenses.toLocaleString()}`, icon: Calendar, bgColor: 'bg-red-200', iconColor: 'text-red-600' },
+    { label: t.common.totalProducts, value: products.length, icon: Package, bgColor: 'bg-green-200', iconColor: 'text-green-600' },
+    { label: t.common.totalCustomers, value: customers.length, icon: Users, bgColor: 'bg-blue-200', iconColor: 'text-blue-600' },
+    { label: t.common.totalSuppliers, value: suppliers.length, icon: Truck, bgColor: 'bg-yellow-200', iconColor: 'text-yellow-600' },
+    { label: t.common.todaySales, value: `$${todaySales.toLocaleString()}`, icon: ShoppingCart, bgColor: 'bg-teal-200', iconColor: 'text-teal-600' },
+    { label: t.common.monthlySales, value: `$${monthlySales.toLocaleString()}`, icon: DollarSign, bgColor: 'bg-indigo-200', iconColor: 'text-indigo-600' },
+    { label: t.common.totalExpenses, value: `$${totalExpenses.toLocaleString()}`, icon: Calendar, bgColor: 'bg-red-200', iconColor: 'text-red-600' },
   ];
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
       <div className="page-header flex items-center justify-between">
-        <h1 className="page-title text-[18px] font-bold">Dashboard</h1>
+        <h1 className="page-title text-[18px] font-bold">{t.common.dashboard}</h1>
       </div>
 
       {/* Stats Grid */}
@@ -102,7 +104,7 @@ export default function Dashboard() {
           )}
         </div>
         <div>
-          <p className="text-[12px] font-medium text-muted-foreground">Monthly Profit / Loss</p>
+          <p className="text-[12px] font-medium text-muted-foreground">{t.common.monthlyProfitLoss}</p>
           <p
             className={`text-lg font-bold ${profit >= 0 ? "text-green-600" : "text-red-600"
               }`}
@@ -119,7 +121,7 @@ export default function Dashboard() {
           variants={item}
           className="stat-card bg-white dark:bg-zinc-900 rounded-lg p-4 shadow-sm border border-zinc-200 dark:border-zinc-700"
         >
-          <h3 className="text-sm font-semibold mb-4">Daily Sales</h3>
+          <h3 className="text-sm font-semibold mb-4">{t.common.dailySales}</h3>
           <ResponsiveContainer width="100%" height={220}>
             <AreaChart data={salesData}>
               <defs>
@@ -147,7 +149,7 @@ export default function Dashboard() {
           variants={item}
           className="stat-card bg-white dark:bg-zinc-900 rounded-lg p-4 shadow-sm border border-zinc-200 dark:border-zinc-700"
         >
-          <h3 className="text-sm font-semibold mb-4">Monthly Sales vs Expenses</h3>
+          <h3 className="text-sm font-semibold mb-4">{t.common.monthlySalesVsExpenses}</h3>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={monthlySalesData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 13%, 91%)" />
@@ -166,7 +168,7 @@ export default function Dashboard() {
         variants={item}
         className="bg-white dark:bg-zinc-900 rounded-lg p-4 shadow-sm border border-zinc-200 dark:border-zinc-700"
       >
-        <h3 className="text-sm font-semibold mb-4">Recent Orders</h3>
+        <h3 className="text-sm font-semibold mb-4">{t.common.recentOrders}</h3>
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -181,10 +183,10 @@ export default function Dashboard() {
                     onClick={() => requestSort(col as keyof typeof orders[0])}
                   >
                     <div className="flex items-center gap-1">
-                      {col === 'invoiceNo' && 'Invoice'}
-                      {col === 'customerName' && 'Customer'}
-                      {col === 'date' && 'Date'}
-                      {col === 'total' && 'Amount'}
+                      {col === 'invoiceNo' && t.common.invoice}
+                      {col === 'customerName' && t.common.customer}
+                      {col === 'date' && t.common.date}
+                      {col === 'total' && t.common.amount}
 
                       {sortConfig.key === col ? (
                         sortConfig.direction === 'asc' ? (
@@ -198,7 +200,7 @@ export default function Dashboard() {
                     </div>
                   </th>
                 ))}
-                <th className="py-3 text-left font-semibold rounded-tr-lg">Status</th>
+                <th className="py-3 text-left font-semibold rounded-tr-lg">{t.common.status}</th>
               </tr>
             </thead>
 
@@ -235,7 +237,7 @@ export default function Dashboard() {
           {/* Pagination */}
           <div className="flex justify-between items-center px-4 py-2 border-t border-zinc-200 bg-white dark:bg-zinc-900">
             <div className="text-[13px] text-gray-700 dark:text-gray-300">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
+              {t.common.showing} {(currentPage - 1) * itemsPerPage + 1} {t.common.to} {Math.min(currentPage * itemsPerPage, totalItems)} {t.common.of} {totalItems} {t.common.entries}
             </div>
             <div className="flex items-center gap-1">
               <Button
@@ -244,7 +246,7 @@ export default function Dashboard() {
                 onClick={() => setCurrentPage(prev => prev - 1)}
                 className="px-2 py-1 text-[13px]"
               >
-                Prev
+                {t.common.prev}
               </Button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
                 <Button
@@ -262,7 +264,7 @@ export default function Dashboard() {
                 onClick={() => setCurrentPage(prev => prev + 1)}
                 className="px-2 py-1 text-[13px]"
               >
-                Next
+                {t.common.next}
               </Button>
             </div>
           </div>

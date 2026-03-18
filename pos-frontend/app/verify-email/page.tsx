@@ -4,8 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Home, Mail, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 export default function VerifyEmail() {
+    const { t } = useLanguage();
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [timer, setTimer] = useState(30);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -71,10 +73,10 @@ export default function VerifyEmail() {
                         </div>
 
                         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                            Verify your email
+                            {t.common.verifyEmail}
                         </h2>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">
-                            We've sent a verification code to your email address.
+                            {t.common.verifyEmailSent}
                         </p>
                     </div>
 
@@ -99,12 +101,12 @@ export default function VerifyEmail() {
                             type="submit"
                             className="w-full h-11 bg-[#27AA83] hover:bg-[#209a75] text-white font-semibold rounded-lg transition-colors cursor-pointer"
                         >
-                            Verify Email
+                            {t.common.verifyEmailButton}
                         </Button>
 
                         <div className="text-center">
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Didn't receive the code?{" "}
+                                {t.common.didNotReceiveCode}{" "}
                                 <button
                                     type="button"
                                     onClick={handleResend}
@@ -115,7 +117,7 @@ export default function VerifyEmail() {
                                         : "text-[#27AA83] hover:text-[#209a75] hover:underline cursor-pointer"
                                     }`}
                                 >
-                                    {timer > 0 ? `Resend in ${timer}s` : "Resend Code"}
+                                    {timer > 0 ? `${t.common.resendIn} ${timer}s` : t.common.resendCode}
                                 </button>
                             </p>
                         </div>
@@ -126,7 +128,7 @@ export default function VerifyEmail() {
                                 className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                             >
                                 <ArrowLeft className="w-4 h-4" />
-                                Back to Sign In
+                                {t.common.backToSignIn}
                             </Link>
                         </div>
                     </form>
