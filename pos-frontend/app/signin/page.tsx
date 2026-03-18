@@ -31,22 +31,14 @@ export default function SignIn() {
         console.log("Sign in data:", { ...formData, rememberMe });
     };
 
-    const handleGoogleSignIn = () => {
-        console.log("Sign in with Google");
-    };
-
-    const handleFacebookSignIn = () => {
-        console.log("Sign in with Facebook");
-    };
-
     return (
         <div className="min-h-screen bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-2">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-[430px]">
                 <div className="stat-card bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-300 dark:border-gray-600 p-6">
 
                     {/* Header */}
                     <div className="mb-3 text-center">
-                        <div className="flex items-center justify-center gap-2 mb-1">
+                        <div className="flex items-center justify-center gap-2 mb-2">
                             <div className="bg-[#27AA83] p-2 rounded-md">
                                 <Home className="w-5 h-5 text-white" />
                             </div>
@@ -61,58 +53,58 @@ export default function SignIn() {
                     </div>
 
                     {/* Sign In Form */}
-                    <form onSubmit={handleSignIn} className="space-y-3">
+                    <form onSubmit={handleSignIn} className="space-y-4">
 
                         {/* Name Field */}
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
                                 Full Name
                             </label>
                             <div className="relative">
-                                <User className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+                                <User className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
                                 <Input
                                     type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={handleInputChange}
                                     placeholder="Enter your name"
-                                    className="pl-10 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
+                                    className="pl-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                             </div>
                         </div>
 
                         {/* Email Field */}
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
                                 Email Address
                             </label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+                                <Mail className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
                                 <Input
                                     type="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
                                     placeholder="Enter your email"
-                                    className="pl-10 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
+                                    className="pl-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                             </div>
                         </div>
 
                         {/* Password Field */}
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
                                 Password
                             </label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+                                <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
                                 <Input
                                     type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={formData.password}
                                     onChange={handleInputChange}
                                     placeholder="Enter your password"
-                                    className="pl-10 pr-10 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
+                                    className="pl-10 pr-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                                 <button
                                     type="button"
@@ -130,18 +122,18 @@ export default function SignIn() {
 
                         {/* Confirm Password Field */}
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
                                 Confirm Password
                             </label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+                                <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 mt-0.5" />
                                 <Input
                                     type={showConfirmPassword ? "text" : "password"}
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
                                     onChange={handleInputChange}
                                     placeholder="Confirm your password"
-                                    className="pl-10 pr-10 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
+                                    className="pl-10 pr-10 text-sm border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:ring-offset-0 dark:bg-gray-700 dark:text-white"
                                 />
                                 <button
                                     type="button"
@@ -160,7 +152,7 @@ export default function SignIn() {
                         </div>
 
                         {/* Remember Me & Forgot Password */}
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center justify-between mb-5">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -188,42 +180,6 @@ export default function SignIn() {
                         >
                             Sign In
                         </Button>
-
-                        {/* Divider */}
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                                or
-                            </span>
-                            <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
-                        </div>
-
-                        {/* Social Login */}
-                        <div className="grid grid-cols-1 gap-3">
-                            {/* Google */}
-                            <button
-                                type="button"
-                                onClick={handleGoogleSignIn}
-                                className="flex items-center justify-center gap-2 py-2.5 px-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                            >
-                                <FcGoogle className="w-5 h-5" />
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline">
-                                    Google
-                                </span>
-                            </button>
-                        </div>
-
-                        {/* Sign Up */}
-                        {/* <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
-                            Don't have an account?{" "}
-                            <Link
-                                href="/signup"
-                                className="text-[13px] text-[#27AA83] hover:text-[#209a75] hover:underline underline-offset-2 decoration-[#27AA83] font-semibold transition-colors"
-                            >
-                                Sign Up
-                            </Link>
-                        </p> */}
-
                     </form>
                 </div>
             </div>

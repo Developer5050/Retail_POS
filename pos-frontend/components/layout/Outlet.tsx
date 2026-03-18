@@ -14,11 +14,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
   const toggleSidebar = () => setSidebarCollapsed(!sidebarCollapsed);
 
-  // Check if current route is signin page
-  const isSignInPage = pathname === "/signin";
+  // Check if current route is auth pages (signin, verify-email)
+  const isAuthPage = pathname === "/signin" || pathname === "/verify-email";
 
-  // If signin page, render without layout
-  if (isSignInPage) {
+  // If auth page, render without layout
+  if (isAuthPage) {
     return <>{children}</>;
   }
 
