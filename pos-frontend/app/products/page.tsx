@@ -14,6 +14,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 type SortConfig = {
     key: keyof Product | null;
@@ -22,6 +23,7 @@ type SortConfig = {
 
 
 export default function Products() {
+    const { t } = useLanguage();
     const [productsList, setProductsList] = useState<Product[]>(initialProducts);
     const [categoriesList, setCategoriesList] = useState<Category[]>(initialCategories);
     const [selectedCat, setSelectedCat] = useState<string>('All');
@@ -119,7 +121,7 @@ export default function Products() {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="page-header flex items-center justify-between">
-                <h1 className="page-title text-[18px] font-bold">Products</h1>
+                <h1 className="page-title text-[18px] font-bold">{t.common.products}</h1>
 
                 <Button
                     onClick={openNewProduct}
@@ -127,7 +129,7 @@ export default function Products() {
                     className="bg-[#27AA83] hover:bg-[#219a75] text-white flex items-center gap-1 mt-1 text-[13px]"
                 >
                     <Plus className="w-3.5 h-3.5" />
-                    Add Product
+                    {t.common.addProduct}
                 </Button>
             </div>
 
@@ -136,7 +138,7 @@ export default function Products() {
                 <div className="stat-card h-fit mt-6 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
 
                     <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-sm font-semibold">Categories</h3>
+                        <h3 className="text-sm font-semibold">{t.common.categories}</h3>
 
                         <Dialog open={showCatDialog} onOpenChange={setShowCatDialog}>
                             <DialogTrigger asChild>
@@ -144,19 +146,19 @@ export default function Products() {
                                     className="text-[#27AA83] hover:underline text-xs"
                                     onClick={() => { setEditCat(null); setCatName(''); }}
                                 >
-                                    + Add
+                                    + {t.common.add}
                                 </button>
                             </DialogTrigger>
 
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>{editCat ? 'Edit' : 'Add'} Category</DialogTitle>
+                                    <DialogTitle>{editCat ? t.common.edit : t.common.add} {t.common.categoryName}</DialogTitle>
                                 </DialogHeader>
 
                                 <Input
                                     value={catName}
                                     onChange={e => setCatName(e.target.value)}
-                                    placeholder="Category name"
+                                    placeholder={t.common.categoryName}
                                     className="text-[13px] mt-0.5 border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none focus:border-[#27AA83]"
                                 />
 
@@ -164,7 +166,7 @@ export default function Products() {
                                     onClick={saveCat}
                                     className="mt-2 bg-[#27AA83] hover:bg-[#219a75] text-white text-[13px]"
                                 >
-                                    Save
+                                    {t.common.save}
                                 </Button>
                             </DialogContent>
                         </Dialog>
@@ -181,7 +183,7 @@ export default function Products() {
                                     : 'hover:bg-muted'
                                 }`}
                         >
-                            All Products
+                            {t.common.allProducts}
                         </button>
 
                         {/* Category List */}
@@ -231,7 +233,7 @@ export default function Products() {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground cursor-pointer" />
                             <input
                                 className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2"
-                                placeholder="Search products by name..."
+                                placeholder={t.common.searchProducts}
                                 value={search}
                                 onChange={e => { setSearch(e.target.value); setCurrentPage(1); }}
                             />
@@ -253,11 +255,11 @@ export default function Products() {
                                             onClick={() => requestSort(col as keyof Product)}
                                         >
                                             <div className="flex items-center gap-1">
-                                                {col === 'name' && 'Product'}
-                                                {col === 'category' && 'Category'}
-                                                {col === 'purchasePrice' && 'Buy Price'}
-                                                {col === 'salePrice' && 'Sell Price'}
-                                                {col === 'stock' && 'Stock'}
+                                                {col === 'name' && t.common.productName}
+                                                {col === 'category' && t.common.categories}
+                                                {col === 'purchasePrice' && t.common.buyPrice}
+                                                {col === 'salePrice' && t.common.sellPrice}
+                                                {col === 'stock' && t.common.stock}
 
                                                 {/* Sort Icon */}
                                                 {sortConfig.key === col ? (
@@ -272,7 +274,7 @@ export default function Products() {
                                             </div>
                                         </th>
                                     ))}
-                                    <th className="py-3 px-3 text-left font-semibold rounded-tr-lg">Actions</th>
+                                    <th className="py-3 px-3 text-left font-semibold rounded-tr-lg">{t.common.actions}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -361,9 +363,9 @@ export default function Products() {
 
             {/* Product Dialog */}
             <Dialog open={showProductDialog} onOpenChange={setShowProductDialog}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>{editProduct ? 'Edit' : 'Add'} Product</DialogTitle>
+                <DialogContent className="sm:max-w-md w-full rounded-lg p-6 bg-white shadow-lg">
+                    <DialogHeader className="pb-2 border-b border-gray-200">
+                        <DialogTitle>{editProduct ? t.common.edit : t.common.add} {t.common.productName}</DialogTitle>
                     </DialogHeader>
 
                     <div className="space-y-3">
@@ -371,7 +373,7 @@ export default function Products() {
                         {/* Product Name */}
                         <div>
                             <Label>
-                                Product Name <span className="text-red-500">*</span>
+                                {t.common.productName} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 value={form.name || ''}
@@ -383,7 +385,7 @@ export default function Products() {
                         {/* Category */}
                         <div>
                             <Label>
-                                Category <span className="text-red-500">*</span>
+                                {t.common.categories} <span className="text-red-500">*</span>
                             </Label>
 
                             <Select
@@ -391,7 +393,7 @@ export default function Products() {
                                 onValueChange={v => setForm({ ...form, category: v })}
                             >
                                 <SelectTrigger className="bg-white dark:bg-zinc-900 text-[13px] mt-0.5 border-zinc-300 focus:border-[#27AA83] focus:ring-0 focus:outline-none">
-                                    <SelectValue placeholder="Select category" />
+                                    <SelectValue placeholder={t.common.selectCategory} />
                                 </SelectTrigger>
 
                                 <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-[13px]">
@@ -410,7 +412,7 @@ export default function Products() {
 
                             <div>
                                 <Label>
-                                    Purchase Price <span className="text-red-500">*</span>
+                                    {t.common.purchasePrice} <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
                                     type="number"
@@ -424,7 +426,7 @@ export default function Products() {
 
                             <div>
                                 <Label>
-                                    Sale Price <span className="text-red-500">*</span>
+                                    {t.common.salePrice} <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
                                     type="number"
@@ -443,7 +445,7 @@ export default function Products() {
 
                             <div>
                                 <Label>
-                                    Stock <span className="text-red-500">*</span>
+                                    {t.common.stock} <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
                                     type="number"
@@ -455,7 +457,7 @@ export default function Products() {
 
                             <div>
                                 <Label>
-                                    Supplier <span className="text-red-500">*</span>
+                                    {t.common.supplier} <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
                                     value={form.supplier || ''}
@@ -471,7 +473,7 @@ export default function Products() {
                             onClick={saveProduct}
                             className="w-full bg-[#27AA83] hover:bg-[#219a75] text-white"
                         >
-                            Save Product
+                            {t.common.saveProduct}
                         </Button>
 
                     </div>

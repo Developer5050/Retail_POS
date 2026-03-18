@@ -19,12 +19,12 @@ const Sidebar = ({ collapsed = false }: SidebarProps) => {
   const menuItems = [
     { name: t.common.dashboard, href: "/", icon: MdOutlineDashboard },
     { name: t.common.products, href: "/products", icon: FiBox },
-    { name: "Customers", href: "/customers", icon: FaUsers },
+    { name: t.common.customer, href: "/customers", icon: FaUsers },
     { name: t.common.orders, href: "/orders", icon: IoCartOutline },
     { name: t.common.suppliers, href: "/suppliers", icon: FiTruck },
-    { name: "Invoices", href: "/invoices", icon: LiaCommentDollarSolid },
-    { name: "Expenses", href: "/expenses", icon: FaMoneyBillWave },
-    { name: "Employees", href: "/employees", icon: FaUserCog },
+    { name: t.common.invoice, href: "/invoices", icon: LiaCommentDollarSolid },
+    { name: t.common.expense, href: "/expenses", icon: FaMoneyBillWave },
+    { name: t.common.employee, href: "/employees", icon: FaUserCog },
     { name: t.common.settings, href: "/settings", icon: FaCog },
   ];
 
