@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { FiMenu, FiSun, FiMoon } from "react-icons/fi";
+import { FiMenu, FiSun, FiMoon, FiGlobe } from "react-icons/fi";
+import { useLanguage } from "../../lib/context/LanguageContext";
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -9,6 +10,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onMenuClick, collapsed = false }) => {
   const [darkMode, setDarkMode] = useState<boolean | null>(null);
+  const { language, setLanguage, t } = useLanguage();
 
   // Dark mode setup
   useEffect(() => {
@@ -50,6 +52,23 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, collapsed = false }) => {
 
         {/* RIGHT SIDE */}
         <div className="flex items-center gap-5">
+          {/* Language Dropdown */}
+          <div className="relative flex items-center gap-2">
+            <FiGlobe className="text-zinc-600 dark:text-zinc-400" />
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as "en" | "german")}
+              className="bg-transparent border-none outline-none text-sm font-medium cursor-pointer text-zinc-700 dark:text-zinc-300"
+            >
+              <option value="en" className="bg-white dark:bg-zinc-900">
+                {t.common.english}
+              </option>
+              <option value="german" className="bg-white dark:bg-zinc-900">
+                {t.common.german}
+              </option>
+            </select>
+          </div>
+
           <button
             onClick={toggleDarkMode}
             className="text-xl p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800"

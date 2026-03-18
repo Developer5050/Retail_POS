@@ -6,25 +6,27 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { FiBox, FiTruck } from "react-icons/fi";
 import { IoCartOutline, IoHomeOutline, IoLogOutOutline } from "react-icons/io5";
 import { LiaCommentDollarSolid } from "react-icons/lia";
+import { useLanguage } from "../../lib/context/LanguageContext";
 
 interface SidebarProps {
   collapsed?: boolean;
 }
 
-const menuItems = [
-  { name: "Dashboard", href: "/", icon: MdOutlineDashboard },
-  { name: "Products", href: "/products", icon: FiBox },
-  { name: "Customers", href: "/customers", icon: FaUsers },
-  { name: "New Orders", href: "/orders", icon: IoCartOutline },
-  { name: "Suppliers", href: "/suppliers", icon: FiTruck },
-  { name: "Invoices", href: "/invoices", icon: LiaCommentDollarSolid },
-  { name: "Expenses", href: "/expenses", icon: FaMoneyBillWave },
-  { name: "Employees", href: "/employees", icon: FaUserCog },
-  { name: "Settings", href: "/settings", icon: FaCog },
-];
-
 const Sidebar = ({ collapsed = false }: SidebarProps) => {
   const pathname = usePathname();
+  const { t } = useLanguage();
+
+  const menuItems = [
+    { name: t.common.dashboard, href: "/", icon: MdOutlineDashboard },
+    { name: t.common.products, href: "/products", icon: FiBox },
+    { name: "Customers", href: "/customers", icon: FaUsers },
+    { name: t.common.orders, href: "/orders", icon: IoCartOutline },
+    { name: t.common.suppliers, href: "/suppliers", icon: FiTruck },
+    { name: "Invoices", href: "/invoices", icon: LiaCommentDollarSolid },
+    { name: "Expenses", href: "/expenses", icon: FaMoneyBillWave },
+    { name: "Employees", href: "/employees", icon: FaUserCog },
+    { name: t.common.settings, href: "/settings", icon: FaCog },
+  ];
 
   return (
     <aside
@@ -86,12 +88,12 @@ const Sidebar = ({ collapsed = false }: SidebarProps) => {
           </div>
           {!collapsed && (
             <h1 className="text-md font-medium text-[15px] cursor-pointer text-[#C5CAD3]">
-              Logout
+              {t.common.logout}
             </h1>
           )}
           {collapsed && (
             <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded-md bg-gray-800 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
-              Logout
+              {t.common.logout}
             </span>
           )}
         </div>
