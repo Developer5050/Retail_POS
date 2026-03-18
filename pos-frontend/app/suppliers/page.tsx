@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 type SortConfig = {
   key: keyof Supplier | null;
@@ -17,6 +18,7 @@ type SortConfig = {
 };
 
 export default function Suppliers() {
+  const { t } = useLanguage();
   const [list, setList] = useState<Supplier[]>(initialSuppliers);
   const [search, setSearch] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: 'asc' });
@@ -80,29 +82,29 @@ export default function Suppliers() {
   };
 
   const savePurchase = () => {
-    toast.success(`Stock increased by ${purchaseForm.qty} units`);
+    toast.success(`${t.common.stockIncreased} ${purchaseForm.qty} ${t.common.units}`);
     setShowPurchase(false);
   };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="page-header flex items-center justify-between">
-        <h1 className="page-title text-[18px] font-bold mt-1">Suppliers</h1>
+        <h1 className="page-title text-[18px] font-bold mt-1">{t.common.suppliers}</h1>
         <div className="flex gap-2 justify-end items-center">
-          <Button onClick={() => setShowPurchase(true)} variant="outline" size="sm"><ShoppingBag className="w-4 h-4 mr-1 bg-[#27AA83] hover:bg-[#219a75] text-white" /> New Purchase</Button>
+          <Button onClick={() => setShowPurchase(true)} variant="outline" size="sm"><ShoppingBag className="w-4 h-4 mr-1 bg-[#27AA83] hover:bg-[#219a75] text-white" /> {t.common.newPurchase}</Button>
           <Button
             onClick={openNew}
             size="sm"
             className="bg-[#27AA83] hover:bg-[#219a75] text-white flex items-center"
           >
-            <Plus className="w-4 h-4 mr-1" /> Add Supplier
+            <Plus className="w-4 h-4 mr-1" /> {t.common.addSupplier}
           </Button>
         </div>
       </div>
 
       <div className="mb-4 relative mt-3 max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <input className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2" placeholder="Search suppliers..." value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} />
+        <input className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2" placeholder={t.common.searchSuppliers} value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} />
       </div>
 
       <div className="stat-card overflow-x-auto bg-white dark:bg-zinc-900 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700">
@@ -118,7 +120,10 @@ export default function Suppliers() {
                     } ${col.key === 'address' ? '' : ''}`}
                 >
                   <div className="flex items-center gap-1">
-                    {col.label}
+                    {col.key === 'name' && t.common.name}
+                    {col.key === 'company' && t.common.company}
+                    {col.key === 'phone' && t.common.phone}
+                    {col.key === 'address' && t.common.address}
                     {sortConfig.key === col.key ? (
                       sortConfig.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -131,7 +136,7 @@ export default function Suppliers() {
                   </div>
                 </th>
               ))}
-              <th className="py-2 px-3 text-left font-semibold rounded-tr-lg">Actions</th>
+              <th className="py-2 px-3 text-left font-semibold rounded-tr-lg">{t.common.actions}</th>
             </tr>
           </thead>
 
@@ -151,7 +156,7 @@ export default function Suppliers() {
                           <button onClick={() => openEdit(s)} className="p-1.5 rounded hover:bg-muted"><Edit2 className="w-4 h-4 text-muted-foreground cursor-pointer" /></button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">
-                          Edit Supplier
+                          {t.common.editSupplier}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -161,7 +166,7 @@ export default function Suppliers() {
                           <button onClick={() => setList(prev => prev.filter(x => x.id !== s.id))} className="p-1.5 rounded hover:bg-muted"><Trash2 className="w-4 h-4 text-red-500 hover:text-red-700 cursor-pointer" /></button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">
-                          Delete Supplier
+                          {t.common.deleteSupplier}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -175,7 +180,7 @@ export default function Suppliers() {
         {/* Pagination */}
         <div className="flex justify-between items-center px-4 py-2 border-t border-zinc-200 bg-white">
           <div className="text-[13px] text-gray-700">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
+            {t.common.showing} {(currentPage - 1) * itemsPerPage + 1} {t.common.to} {Math.min(currentPage * itemsPerPage, totalItems)} {t.common.of} {totalItems} {t.common.entries}
           </div>
           <div className="flex items-center gap-1">
             <Button
@@ -184,7 +189,7 @@ export default function Suppliers() {
               onClick={() => setCurrentPage(prev => prev - 1)}
               className="px-2 py-1 text-[13px]"
             >
-              Prev
+              {t.common.prev}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
               <Button
@@ -202,7 +207,7 @@ export default function Suppliers() {
               onClick={() => setCurrentPage(prev => prev + 1)}
               className="px-2 py-1 text-[13px]"
             >
-              Next
+              {t.common.next}
             </Button>
           </div>
         </div>
@@ -211,54 +216,54 @@ export default function Suppliers() {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editing ? 'Edit' : 'Add'} Supplier</DialogTitle>
+            <DialogTitle>{editing ? t.common.edit : t.common.add} {t.common.suppliers}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-3">
             <div>
               <Label>
-                Name <span className="text-red-500">*</span>
+                {t.common.name} <span className="text-red-500">*</span>
               </Label>
               <input
                 value={form.name || ''}
                 onChange={e => setForm({ ...form, name: e.target.value })}
-                placeholder="Enter name"
+                placeholder={t.common.enterName}
                 className="mt-1 w-full text-sm border border-zinc-300 rounded-lg focus:outline-none focus:border-[#27AA83] focus:ring-0 p-2"
               />
             </div>
 
             <div>
               <Label>
-                Company <span className="text-red-500">*</span>
+                {t.common.company} <span className="text-red-500">*</span>
               </Label>
               <input
                 value={form.company || ''}
                 onChange={e => setForm({ ...form, company: e.target.value })}
-                placeholder="Enter company"
+                placeholder={t.common.company}
                 className="mt-1 w-full text-sm border border-zinc-300 rounded-lg focus:outline-none focus:border-[#27AA83] focus:ring-0 p-2"
               />
             </div>
 
             <div>
               <Label>
-                Phone <span className="text-red-500">*</span>
+                {t.common.phone} <span className="text-red-500">*</span>
               </Label>
               <input
                 value={form.phone || ''}
                 onChange={e => setForm({ ...form, phone: e.target.value })}
-                placeholder="Enter phone"
+                placeholder={t.common.phone}
                 className="mt-1 w-full text-sm border border-zinc-300 rounded-lg focus:outline-none focus:border-[#27AA83] focus:ring-0 p-2"
               />
             </div>
 
             <div>
               <Label>
-                Address <span className="text-red-500">*</span>
+                {t.common.address} <span className="text-red-500">*</span>
               </Label>
               <input
                 value={form.address || ''}
                 onChange={e => setForm({ ...form, address: e.target.value })}
-                placeholder="Enter address"
+                placeholder={t.common.address}
                 className="mt-1 w-full text-sm border border-zinc-300 rounded-lg focus:outline-none focus:border-[#27AA83] focus:ring-0 p-2"
               />
             </div>
@@ -267,7 +272,7 @@ export default function Suppliers() {
               onClick={save}
               className="w-full bg-[#27AA83] hover:bg-[#219a75] text-white"
             >
-              Save
+              {t.common.save}
             </Button>
           </div>
         </DialogContent>
@@ -276,20 +281,20 @@ export default function Suppliers() {
       <Dialog open={showPurchase} onOpenChange={setShowPurchase}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>New Purchase</DialogTitle>
+            <DialogTitle>{t.common.newPurchase}</DialogTitle>
           </DialogHeader>
 
           {/* Supplier */}
           <div>
             <Label>
-              Supplier <span className="text-red-500">*</span>
+              {t.common.suppliers} <span className="text-red-500">*</span>
             </Label>
             <Select
               value={purchaseForm.supplierId}
               onValueChange={v => setPurchaseForm({ ...purchaseForm, supplierId: v })}
             >
               <SelectTrigger className="mt-1 w-full text-sm rounded-md border border-zinc-300 focus:outline-none focus:border-[#27AA83] focus:ring-0">
-                <SelectValue placeholder="Select supplier" />
+                <SelectValue placeholder={t.common.selectSupplier} />
               </SelectTrigger>
               <SelectContent
                 className="absolute z-50 max-h-60 overflow-y-auto rounded-md border border-zinc-300 shadow-lg bg-white"
@@ -310,14 +315,14 @@ export default function Suppliers() {
           {/* Product */}
           <div>
             <Label>
-              Product <span className="text-red-500">*</span>
+              {t.common.productName} <span className="text-red-500">*</span>
             </Label>
             <Select
               value={purchaseForm.productId}
               onValueChange={v => setPurchaseForm({ ...purchaseForm, productId: v })}
             >
               <SelectTrigger className="mt-1 w-full text-sm rounded-md border border-zinc-300 focus:outline-none focus:border-[#27AA83] focus:ring-0">
-                <SelectValue placeholder="Select product" />
+                <SelectValue placeholder={t.common.selectProduct} />
               </SelectTrigger>
               <SelectContent
                 className="absolute z-50 max-h-60 overflow-y-auto rounded-md border border-zinc-300 shadow-lg bg-white"
@@ -339,7 +344,7 @@ export default function Suppliers() {
           <div className="grid grid-cols-3 gap-3">
             <div>
               <Label>
-                Quantity <span className="text-red-500">*</span>
+                {t.common.quantity} <span className="text-red-500">*</span>
               </Label>
               <input
                 type="number"
@@ -351,7 +356,7 @@ export default function Suppliers() {
 
             <div>
               <Label>
-                Buy Price <span className="text-red-500">*</span>
+                {t.common.buyPrice} <span className="text-red-500">*</span>
               </Label>
               <input
                 type="number"
@@ -363,7 +368,7 @@ export default function Suppliers() {
 
             <div>
               <Label>
-                Sell Price <span className="text-red-500">*</span>
+                {t.common.sellPrice} <span className="text-red-500">*</span>
               </Label>
               <input
                 type="number"
@@ -379,7 +384,7 @@ export default function Suppliers() {
             onClick={savePurchase}
             className="w-full bg-[#27AA83] hover:bg-[#219a75] text-white"
           >
-            Save Purchase
+            {t.common.savePurchase}
           </Button>
         </DialogContent>
       </Dialog>

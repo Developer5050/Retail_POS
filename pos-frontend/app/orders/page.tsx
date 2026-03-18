@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 type SortConfig = {
   key: keyof Product | null;
@@ -17,6 +18,7 @@ type SortConfig = {
 };
 
 export default function NewOrder() {
+  const { t } = useLanguage();
   const [prodSearch, setProdSearch] = useState('');
   const [custSearch, setCustSearch] = useState('');
   const [cart, setCart] = useState<OrderItem[]>([]);
@@ -85,10 +87,10 @@ export default function NewOrder() {
 
   const saveOrder = () => {
     if (!selectedCustomer || cart.length === 0) {
-      toast.error('Please select a customer and add products');
+      toast.error(t.common.pleaseSelectCustomerAndProducts);
       return;
     }
-    toast.success('Order saved & invoice generated!');
+    toast.success(t.common.orderSavedInvoiceGenerated);
     setCart([]);
     setSelectedCustomer(null);
     setDcNo('');
@@ -98,7 +100,7 @@ export default function NewOrder() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="page-header">
-        <h1 className="page-title text-[18px] font-bold mt-1">New Order</h1>
+        <h1 className="page-title text-[18px] font-bold mt-1">{t.common.newOrder}</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6">
@@ -106,7 +108,7 @@ export default function NewOrder() {
         <div>
           <div className="mb-4 relative mt-3">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2" placeholder="Search products..." value={prodSearch} onChange={e => { setProdSearch(e.target.value); setCurrentPage(1); }} />
+            <input className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2" placeholder={t.common.searchProducts} value={prodSearch} onChange={e => { setProdSearch(e.target.value); setCurrentPage(1); }} />
           </div>
 
           {/* Products Table */}
@@ -118,7 +120,7 @@ export default function NewOrder() {
                 <tr>
                   <th className="py-3 px-3 text-left font-semibold rounded-tl-lg cursor-pointer select-none" onClick={() => requestSort('name')}>
                     <div className="flex items-center gap-1">
-                      Product
+                      {t.common.productName}
                       {sortConfig.key === 'name' ? (
                         sortConfig.direction === 'asc' ? (
                           <ChevronUp className="w-3 h-3" />
@@ -132,7 +134,7 @@ export default function NewOrder() {
                   </th>
                   <th className="py-3 px-3 text-left font-semibold cursor-pointer select-none" onClick={() => requestSort('category')}>
                     <div className="flex items-center gap-1">
-                      Category
+                      {t.common.categories}
                       {sortConfig.key === 'category' ? (
                         sortConfig.direction === 'asc' ? (
                           <ChevronUp className="w-3 h-3" />
@@ -146,7 +148,7 @@ export default function NewOrder() {
                   </th>
                   <th className="py-3 px-3 text-left font-semibold cursor-pointer select-none" onClick={() => requestSort('salePrice')}>
                     <div className="flex items-center gap-1">
-                      Price
+                      {t.common.price}
                       {sortConfig.key === 'salePrice' ? (
                         sortConfig.direction === 'asc' ? (
                           <ChevronUp className="w-3 h-3" />
@@ -160,7 +162,7 @@ export default function NewOrder() {
                   </th>
                   <th className="py-3 px-3 text-left font-semibold cursor-pointer select-none" onClick={() => requestSort('stock')}>
                     <div className="flex items-center gap-1">
-                      Stock
+                      {t.common.stock}
                       {sortConfig.key === 'stock' ? (
                         sortConfig.direction === 'asc' ? (
                           <ChevronUp className="w-3 h-3" />
@@ -172,7 +174,7 @@ export default function NewOrder() {
                       )}
                     </div>
                   </th>
-                  <th className="py-3 px-3 text-left font-semibold rounded-tr-lg">Action</th>
+                  <th className="py-3 px-3 text-left font-semibold rounded-tr-lg">{t.common.actions}</th>
                 </tr>
               </thead>
 
@@ -202,7 +204,7 @@ export default function NewOrder() {
                         onClick={() => addToCart(p.id, p.name, p.salePrice)}
                         className="px-3 py-1 text-[13px] bg-[#27AA83] text-white rounded-md hover:bg-[#219a75] cursor-pointer"
                       >
-                        Add
+                        {t.common.add}
                       </button>
                     </td>
                   </tr>
@@ -214,7 +216,7 @@ export default function NewOrder() {
             {/* Pagination */}
             <div className="flex justify-between items-center px-4 py-2 border-t border-zinc-200 bg-white">
               <div className="text-[13px] text-gray-700">
-                Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
+                {t.common.showing} {(currentPage - 1) * itemsPerPage + 1} {t.common.to} {Math.min(currentPage * itemsPerPage, totalItems)} {t.common.of} {totalItems} {t.common.entries}
               </div>
               <div className="flex items-center gap-1">
                 <Button
@@ -223,7 +225,7 @@ export default function NewOrder() {
                   onClick={() => setCurrentPage(prev => prev - 1)}
                   className="px-2 py-1 text-[13px]"
                 >
-                  Prev
+                  {t.common.prev}
                 </Button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
                   <Button
@@ -241,7 +243,7 @@ export default function NewOrder() {
                   onClick={() => setCurrentPage(prev => prev + 1)}
                   className="px-2 py-1 text-[13px]"
                 >
-                  Next
+                  {t.common.next}
                 </Button>
               </div>
             </div>
@@ -250,12 +252,12 @@ export default function NewOrder() {
           {/* Cart */}
           <div className="stat-card bg-white dark:bg-zinc-900 rounded-lg p-4 shadow-sm border border-zinc-200 dark:border-zinc-700">
             <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-              <IoCartOutline className="w-4 h-4" /> Cart ({cart.length} items)
+              <IoCartOutline className="w-4 h-4" /> {t.common.cart} ({cart.length} {t.common.items})
             </h3>
 
             {cart.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-8">
-                No items in cart
+                {t.common.noItemsInCart}
               </p>
             ) : (
               <div className="space-y-3">
@@ -269,9 +271,6 @@ export default function NewOrder() {
                       <p className="text-[13px] font-semibold text-zinc-800 dark:text-zinc-200">
                         {item.productName}
                       </p>
-                      {/* <p className="text-xs text-muted-foreground mt-0.5">
-                        ${item.price} each
-                      </p> */}
                     </div>
 
                     {/* Qty Controls */}
@@ -310,7 +309,7 @@ export default function NewOrder() {
                                  <TooltipTrigger asChild>
                                       <RiDeleteBinLine className="w-4 h-4 text-red-500" />
                                   </TooltipTrigger>
-                                  <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">Delete Item
+                                  <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">{t.common.delete}
                                     </TooltipContent>
                               </Tooltip>
                         </TooltipProvider>
@@ -323,7 +322,7 @@ export default function NewOrder() {
                 {/* Total */}
                 <div className="flex justify-between items-center pt-3 mt-2 border-t border-zinc-200 dark:border-zinc-700">
                   <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                    Grand Total
+                    {t.common.grandTotal}
                   </span>
 
                   <span className="text-lg font-bold text-[#27AA83]">
@@ -338,14 +337,14 @@ export default function NewOrder() {
         {/* Right: Customer & Order Info */}
         <div className="space-y-4">
           <div className="stat-card mt-3.5 bg-white dark:bg-zinc-900 rounded-lg p-4 shadow-sm border border-zinc-200 dark:border-zinc-700">
-            <h3 className="text-[15px] font-semibold mb-3">Customer</h3>
+            <h3 className="text-[15px] font-semibold mb-3">{t.common.customer}</h3>
 
             <div className="relative mb-3">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
 
               <input
                 className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2"
-                placeholder="Search customer..."
+                placeholder={t.common.searchCustomer}
                 value={custSearch}
                 onChange={e => setCustSearch(e.target.value)}
               />
@@ -376,24 +375,24 @@ export default function NewOrder() {
           </div>
 
           <div className="stat-card bg-white dark:bg-zinc-900 rounded-lg p-4 shadow-sm border border-zinc-200 dark:border-zinc-700 space-y-3 mt-3">
-            <h3 className="text-[15px] font-semibold">Order Details</h3>
+            <h3 className="text-[15px] font-semibold">{t.common.orderDetails}</h3>
 
             <div>
-              <Label>DC No</Label>
+              <Label>{t.common.dcNo}</Label>
               <Input
                 value={dcNo}
                 onChange={e => setDcNo(e.target.value)}
-                placeholder="Delivery Challan No"
+                placeholder={t.common.deliveryChallanNo}
                 className="mt-1 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none focus:border-[#27AA83] rounded-lg"
               />
             </div>
 
             <div>
-              <Label>PO No</Label>
+              <Label>{t.common.poNo}</Label>
               <Input
                 value={poNo}
                 onChange={e => setPoNo(e.target.value)}
-                placeholder="Purchase Order No"
+                placeholder={t.common.purchaseOrderNo}
                 className="mt-1 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none focus:border-[#27AA83] rounded-lg"
               />
             </div>
@@ -401,12 +400,12 @@ export default function NewOrder() {
 
           <div className="stat-card bg-white dark:bg-zinc-900 rounded-lg p-4 shadow-sm border border-zinc-200 dark:border-zinc-700 mt-3">
             <div className="flex justify-between text-[13px] mb-2">
-              <span className="text-muted-foreground">Subtotal</span>
+              <span className="text-muted-foreground">{t.common.subtotal}</span>
               <span>${grandTotal.toFixed(2)}</span>
             </div>
 
             <div className="flex justify-between text-[13px] font-bold border-t border-zinc-200 dark:border-zinc-700 pt-2">
-              <span>Grand Total</span>
+              <span>{t.common.grandTotal}</span>
               <span className="text-[#27AA83]">${grandTotal.toFixed(2)}</span>
             </div>
 
@@ -415,7 +414,7 @@ export default function NewOrder() {
               onClick={saveOrder}
               disabled={cart.length === 0}
             >
-              Save Order & Generate Invoice
+              {t.common.saveOrderGenerateInvoice}
             </Button>
           </div>
         </div>
