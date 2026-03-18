@@ -47,6 +47,8 @@ export const en = {
     dailySales: "Daily Sales",
     monthlySalesVsExpenses: "Monthly Sales vs Expenses",
     expense: "Expense",
+    expenses: "Expenses",
+    loss: "Loss",
     employee: "Employee",
     recentOrders: "Recent Orders",
     invoice: "Invoice",

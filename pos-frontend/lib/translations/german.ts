@@ -79,6 +79,8 @@ export const german: TranslationType = {
     saveProduct: "Produkt speichern",
     searchProducts: "Produkte nach Namen suchen...",
     expense: "Ausgabe",
+    expenses: "Ausgaben",
+    loss: "Verlust",
     employee: "Mitarbeiter",
     // Customers Page
     addCustomer: "Kunde hinzufügen",

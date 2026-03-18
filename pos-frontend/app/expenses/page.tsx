@@ -504,8 +504,8 @@ export default function Expenses() {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogHeader>
+        <DialogContent className="sm:max-w-md w-full rounded-lg p-6 bg-white shadow-lg">
+          <DialogHeader className="pb-2 border-b border-gray-200">
             <DialogTitle>{t.common.addExpense}</DialogTitle>
           </DialogHeader>
 
