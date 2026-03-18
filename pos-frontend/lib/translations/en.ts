@@ -114,7 +114,6 @@ export const en = {
     searchSuppliers: "Search suppliers...",
     addSupplier: "Add Supplier",
     company: "Company",
-    name: "Name",
     editSupplier: "Edit Supplier",
     deleteSupplier: "Delete Supplier",
     savePurchase: "Save Purchase",

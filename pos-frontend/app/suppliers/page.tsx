@@ -214,8 +214,8 @@ export default function Suppliers() {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogHeader>
+        <DialogContent className="sm:max-w-md w-full rounded-lg p-6 bg-white shadow-lg">
+          <DialogHeader className="pb-2 border-b border-gray-200">
             <DialogTitle>{editing ? t.common.edit : t.common.add} {t.common.suppliers}</DialogTitle>
           </DialogHeader>
 
@@ -279,8 +279,8 @@ export default function Suppliers() {
       </Dialog>
 
       <Dialog open={showPurchase} onOpenChange={setShowPurchase}>
-        <DialogContent>
-          <DialogHeader>
+        <DialogContent className="sm:max-w-md w-full rounded-lg p-6 bg-white shadow-lg">
+          <DialogHeader className="pb-2 border-b border-gray-200">
             <DialogTitle>{t.common.newPurchase}</DialogTitle>
           </DialogHeader>
 
