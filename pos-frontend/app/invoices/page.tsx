@@ -5,6 +5,7 @@ import { orders as initialOrders, type Order } from '@/data/mockdata';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 type SortConfig = {
   key: keyof Order | null;
@@ -12,6 +13,7 @@ type SortConfig = {
 };
 
 export default function Invoices() {
+  const { t } = useLanguage();
   const [list, setList] = useState(initialOrders);
   const [search, setSearch] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: 'asc' });
@@ -56,12 +58,12 @@ export default function Invoices() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="page-header">
-        <h1 className="page-title text-[18px] font-bold mt-1">Invoices</h1>
+        <h1 className="page-title text-[18px] font-bold mt-1">{t.common.invoices}</h1>
       </div>
 
       <div className="mb-4 relative mt-3 max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <input className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2" placeholder="Search invoices..." value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} />
+        <input className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg p-2" placeholder={t.common.searchInvoices} value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} />
       </div>
 
       <div className="stat-card overflow-x-auto bg-white shadow rounded-lg">
@@ -73,7 +75,7 @@ export default function Invoices() {
             <tr>
               <th className="py-3 px-3 text-left font-semibold rounded-tl-lg cursor-pointer select-none" onClick={() => requestSort('invoiceNo')}>
                 <div className="flex items-center gap-1">
-                  Invoice
+                  {t.common.invoice}
                   {sortConfig.key === 'invoiceNo' ? (
                     sortConfig.direction === 'asc' ? (
                       <ChevronUp className="w-3 h-3" />
@@ -87,7 +89,7 @@ export default function Invoices() {
               </th>
               <th className="py-3 px-3 text-left font-semibold cursor-pointer select-none" onClick={() => requestSort('customerName')}>
                 <div className="flex items-center gap-1">
-                  Customer
+                  {t.common.customer}
                   {sortConfig.key === 'customerName' ? (
                     sortConfig.direction === 'asc' ? (
                       <ChevronUp className="w-3 h-3" />
@@ -101,7 +103,7 @@ export default function Invoices() {
               </th>
               <th className="py-3 px-3 text-left font-semibold cursor-pointer select-none" onClick={() => requestSort('total')}>
                 <div className="flex items-center gap-1">
-                  Amount
+                  {t.common.amount}
                   {sortConfig.key === 'total' ? (
                     sortConfig.direction === 'asc' ? (
                       <ChevronUp className="w-3 h-3" />
@@ -115,7 +117,7 @@ export default function Invoices() {
               </th>
               <th className="py-3 px-3 text-left font-semibold cursor-pointer select-none" onClick={() => requestSort('status')}>
                 <div className="flex items-center gap-1">
-                  Status
+                  {t.common.status}
                   {sortConfig.key === 'status' ? (
                     sortConfig.direction === 'asc' ? (
                       <ChevronUp className="w-3 h-3" />
@@ -129,7 +131,7 @@ export default function Invoices() {
               </th>
               <th className="py-3 px-3 text-left font-semibold cursor-pointer select-none" onClick={() => requestSort('date')}>
                 <div className="flex items-center gap-1">
-                  Date
+                  {t.common.date}
                   {sortConfig.key === 'date' ? (
                     sortConfig.direction === 'asc' ? (
                       <ChevronUp className="w-3 h-3" />
@@ -141,7 +143,7 @@ export default function Invoices() {
                   )}
                 </div>
               </th>
-              <th className="py-3 px-3 text-left font-semibold rounded-tr-lg">Actions</th>
+              <th className="py-3 px-3 text-left font-semibold rounded-tr-lg">{t.common.actions}</th>
             </tr>
           </thead>
 
@@ -199,7 +201,7 @@ export default function Invoices() {
                           <Eye className="w-4 h-4 text-muted-foreground cursor-pointer" />
                         </TooltipTrigger>
                         <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">
-                          View Invoice
+                          {t.common.viewInvoice}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -210,7 +212,7 @@ export default function Invoices() {
                           <Printer className="w-4 h-4 text-muted-foreground cursor-pointer" />
                         </TooltipTrigger>
                         <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">
-                          Print Invoice
+                          {t.common.printInvoice}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -221,7 +223,7 @@ export default function Invoices() {
                           <Download className="w-4 h-4 text-muted-foreground cursor-pointer" />
                         </TooltipTrigger>
                         <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">
-                          Download Invoice
+                          {t.common.downloadInvoice}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -238,7 +240,7 @@ export default function Invoices() {
         {/* Pagination */}
         <div className="flex justify-between items-center px-4 py-2 border-t border-zinc-200 bg-white">
           <div className="text-[13px] text-gray-700">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
+            {t.common.showing} {(currentPage - 1) * itemsPerPage + 1} {t.common.to} {Math.min(currentPage * itemsPerPage, totalItems)} {t.common.of} {totalItems} {t.common.entries}
           </div>
           <div className="flex items-center gap-1">
             <Button
@@ -247,7 +249,7 @@ export default function Invoices() {
               onClick={() => setCurrentPage(prev => prev - 1)}
               className="px-2 py-1 text-[13px]"
             >
-              Prev
+              {t.common.prev}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
               <Button
@@ -265,7 +267,7 @@ export default function Invoices() {
               onClick={() => setCurrentPage(prev => prev + 1)}
               className="px-2 py-1 text-[13px]"
             >
-              Next
+              {t.common.next}
             </Button>
           </div>
         </div>

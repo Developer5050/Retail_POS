@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 type SortConfig = {
   key: keyof Employee | null;
@@ -15,6 +16,7 @@ type SortConfig = {
 };
 
 export default function Employees() {
+  const { t } = useLanguage();
   const [list, setList] = useState<Employee[]>(initialEmployees);
   const [search, setSearch] = useState('');
   const [showDialog, setShowDialog] = useState(false);
@@ -61,13 +63,13 @@ export default function Employees() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {/* Header */}
       <div className="page-header flex items-center justify-between">
-        <h1 className="page-title text-[18px] font-bold mt-1">Employees</h1>
+        <h1 className="page-title text-[18px] font-bold mt-1">{t.common.employees}</h1>
         <Button
           onClick={openNew}
           size="sm"
           className="bg-[#27AA83] hover:bg-[#219a75] text-white flex items-center gap-1 text-[13px] mt-1"
         >
-          <Plus className="w-4 h-4" /> Add Employee
+          <Plus className="w-4 h-4" /> {t.common.addEmployee}
         </Button>
       </div>
 
@@ -76,7 +78,7 @@ export default function Employees() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
           className="search-input w-full pl-10 py-2.5 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-[#27AA83] focus-visible:outline-none focus:border-[#27AA83] text-[13px] mt-0.5 rounded-lg"
-          placeholder="Search employees..."
+          placeholder={t.common.searchEmployees}
           value={search}
           onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} // reset page on search
         />
@@ -94,14 +96,18 @@ export default function Employees() {
                   onClick={() => requestSort(key as keyof Employee)}
                 >
                   <div className="flex items-center gap-1 capitalize">
-                    {key === 'joiningDate' ? 'Joined' : key}
+                    {key === 'name' && t.common.name}
+                    {key === 'position' && t.common.position}
+                    {key === 'phone' && t.common.phone}
+                    {key === 'salary' && t.common.salary}
+                    {key === 'joiningDate' && t.common.joined}
                     {sortConfig.key === key ? (
                       sortConfig.direction === 'asc' ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />
                     ) : <ChevronsUpDown className="w-3 h-3 opacity-40" />}
                   </div>
                 </th>
               ))}
-              <th className="px-4 py-2 text-right text-[14px] rounded-tr-md">Actions</th>
+              <th className="px-4 py-2 text-right text-[14px] rounded-tr-md">{t.common.actions}</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -120,7 +126,7 @@ export default function Employees() {
                           <Edit2 className="w-4 h-4 text-black cursor-pointer" />
                         </button>
                       </TooltipTrigger>
-                      <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">Edit Employee</TooltipContent>
+                      <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">{t.common.editEmployee}</TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                   <TooltipProvider>
@@ -130,7 +136,7 @@ export default function Employees() {
                           <Trash2 className="w-4 h-4 text-red-500 cursor-pointer" />
                         </button>
                       </TooltipTrigger>
-                      <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">Delete Employee</TooltipContent>
+                      <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">{t.common.deleteEmployee}</TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </td>
@@ -142,7 +148,7 @@ export default function Employees() {
         {/* Pagination */}
         <div className="flex justify-between items-center px-4 py-2 border-t border-zinc-200 bg-white">
           <div className="text-[13px] text-gray-700">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
+            {t.common.showing} {(currentPage - 1) * itemsPerPage + 1} {t.common.to} {Math.min(currentPage * itemsPerPage, totalItems)} {t.common.of} {totalItems} {t.common.entries}
           </div>
           <div className="flex items-center gap-1">
             <Button
@@ -151,7 +157,7 @@ export default function Employees() {
               onClick={() => setCurrentPage(prev => prev - 1)}
               className="px-2 py-1 text-[13px]"
             >
-              Prev
+              {t.common.prev}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
               <Button
@@ -169,7 +175,7 @@ export default function Employees() {
               onClick={() => setCurrentPage(prev => prev + 1)}
               className="px-2 py-1 text-[13px]"
             >
-              Next
+              {t.common.next}
             </Button>
           </div>
         </div>
@@ -179,12 +185,19 @@ export default function Employees() {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editing ? 'Edit' : 'Add'} Employee</DialogTitle>
+            <DialogTitle>{editing ? t.common.edit : t.common.add} {t.common.employees}</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
             {['name', 'phone', 'position', 'salary', 'joiningDate'].map((field) => (
               <div key={field}>
-                <Label className="capitalize">{field} <span className="text-red-500">*</span></Label>
+                <Label className="capitalize">
+                  {field === 'name' && t.common.name}
+                  {field === 'phone' && t.common.phone}
+                  {field === 'position' && t.common.position}
+                  {field === 'salary' && t.common.salary}
+                  {field === 'joiningDate' && t.common.joined}
+                  <span className="text-red-500">*</span>
+                </Label>
                 <Input
                   type={field === 'salary' ? 'number' : field === 'joiningDate' ? 'date' : 'text'}
                   className="mt-1 border border-zinc-300 focus:outline-none focus:ring-0 focus:border-[#27AA83]"
@@ -193,7 +206,7 @@ export default function Employees() {
                 />
               </div>
             ))}
-            <Button className="w-full bg-[#27AA83] hover:bg-[#21976f] text-white" onClick={save}>Save</Button>
+            <Button className="w-full bg-[#27AA83] hover:bg-[#21976f] text-white" onClick={save}>{t.common.save}</Button>
           </div>
         </DialogContent>
       </Dialog>

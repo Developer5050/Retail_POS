@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 type SortConfig = {
   key: string | null;
@@ -17,6 +18,7 @@ type SortConfig = {
 };
 
 export default function Expenses() {
+  const { t } = useLanguage();
   const [expenseList, setExpenseList] = useState<Expense[]>(initialExpenses);
   const [showDialog, setShowDialog] = useState(false);
   const [search, setSearch] = useState('');
@@ -52,10 +54,10 @@ export default function Expenses() {
   }));
 
   const chartData = [
-    { name: 'Sales', amount: totalSales },
-    { name: 'Purchase Cost', amount: totalPurchaseCost },
-    { name: 'Expenses', amount: totalExpenses },
-    { name: profit >= 0 ? 'Profit' : 'Loss', amount: Math.abs(profit) },
+    { name: t.common.totalSales, amount: totalSales },
+    { name: t.common.purchaseCost, amount: totalPurchaseCost },
+    { name: t.common.expenses, amount: totalExpenses },
+    { name: profit >= 0 ? t.common.profit : t.common.loss, amount: Math.abs(profit) },
   ];
 
   const requestSalesSort = (key: string) => {
@@ -126,14 +128,14 @@ export default function Expenses() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="page-header flex items-center justify-between">
-        <h1 className="page-title text-[18px] font-bold mt-1">Expenses & Profit</h1>
+        <h1 className="page-title text-[18px] font-bold mt-1">{t.common.expensesProfit}</h1>
         <Button
           onClick={() => setShowDialog(true)}
           size="sm"
           className="bg-[#27AA83] hover:bg-[#219a75] text-white flex items-center gap-1 text-[13px] mt-1"
         >
           <Plus className="w-4 h-4" />
-          Add Expense
+          {t.common.addExpense}
         </Button>
       </div>
 
@@ -144,7 +146,7 @@ export default function Expenses() {
         <div className="border border-gray-200 rounded-lg p-4">
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
             <DollarSign className="w-4 h-4 text-green-500" />
-            <span className="text-[12px] font-medium text-muted-foreground">Total Sales</span>
+            <span className="text-[12px] font-medium text-muted-foreground">{t.common.totalSales}</span>
           </div>
           <p className="text-[16px] font-bold mt-1">
             ${totalSales.toLocaleString()}
@@ -155,7 +157,7 @@ export default function Expenses() {
         <div className="border border-gray-200 rounded-lg p-4">
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
             <DollarSign className="w-4 h-4 text-orange-500" />
-            <span className="text-[12px] font-medium text-muted-foreground">Purchase Cost</span>
+            <span className="text-[12px] font-medium text-muted-foreground">{t.common.purchaseCost}</span>
           </div>
           <p className="text-[16px] font-bold mt-1">
             ${totalPurchaseCost.toLocaleString()}
@@ -166,7 +168,7 @@ export default function Expenses() {
         <div className="border border-gray-200 rounded-lg p-4">
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
             <DollarSign className="w-4 h-4 text-red-500" />
-            <span className="text-[12px] font-medium text-muted-foreground">Expenses</span>
+            <span className="text-[12px] font-medium text-muted-foreground">{t.common.expenses}</span>
           </div>
           <p className="text-[16px] font-bold mt-1">
             ${totalExpenses.toLocaleString()}
@@ -181,7 +183,7 @@ export default function Expenses() {
             ) : (
               <TrendingDown className="w-4 h-4 text-red-500" />
             )}
-            <span className="text-[12px] font-medium text-muted-foreground">Profit / Loss</span>
+            <span className="text-[12px] font-medium text-muted-foreground">{t.common.profitLoss}</span>
           </div>
 
           <p className={`text-[16px] font-bold mt-1 ${profit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -193,7 +195,7 @@ export default function Expenses() {
 
       {/* Chart */}
       <div className="stat-card mb-6 border border-gray-200 rounded-lg p-4">
-        <h3 className="text-[14px] font-bold text-muted-foreground mb-4">Monthly Summary</h3>
+        <h3 className="text-[14px] font-bold text-muted-foreground mb-4">{t.common.monthlySummary}</h3>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 13%, 91%)" />
@@ -205,7 +207,7 @@ export default function Expenses() {
                   <Bar dataKey="amount" fill="hsl(162, 63%, 41%)" radius={[4, 4, 0, 0]} />
                 </TooltipTrigger>
                 <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">
-                  Monthly Summary
+                  {t.common.monthlySummary}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -219,7 +221,7 @@ export default function Expenses() {
         <div className="overflow-x-auto bg-white shadow rounded-md border border-gray-200">
 
           <div className="px-4 py-3 font-bold text-gray-700">
-            Sales Records
+            {t.common.salesRecords}
           </div>
 
           <table className="min-w-full">
@@ -227,7 +229,7 @@ export default function Expenses() {
               <tr>
                 <th className="px-4 py-2 text-[14px] font-bold text-left rounded-tl-md cursor-pointer select-none" onClick={() => requestSalesSort('name')}>
                   <div className="flex items-center gap-1">
-                    Product
+                    {t.common.productName}
                     {salesSort.key === 'name' ? (
                       salesSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -241,7 +243,7 @@ export default function Expenses() {
                 </th>
                 <th className="px-4 py-2 text-[14px] font-bold text-left cursor-pointer select-none" onClick={() => requestSalesSort('salePrice')}>
                   <div className="flex items-center gap-1">
-                    Sale
+                    {t.common.sale}
                     {salesSort.key === 'salePrice' ? (
                       salesSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -255,7 +257,7 @@ export default function Expenses() {
                 </th>
                 <th className="px-4 py-2 text-[14px] font-bold text-left cursor-pointer select-none" onClick={() => requestSalesSort('purchasePrice')}>
                   <div className="flex items-center gap-1">
-                    Cost
+                    {t.common.cost}
                     {salesSort.key === 'purchasePrice' ? (
                       salesSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -269,7 +271,7 @@ export default function Expenses() {
                 </th>
                 <th className="px-4 py-2 text-[14px] font-bold text-left cursor-pointer select-none" onClick={() => requestSalesSort('profit')}>
                   <div className="flex items-center gap-1">
-                    Profit
+                    {t.common.profit}
                     {salesSort.key === 'profit' ? (
                       salesSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -283,7 +285,7 @@ export default function Expenses() {
                 </th>
                 <th className="px-4 py-2 text-[14px] font-bold text-left rounded-tr-md cursor-pointer select-none" onClick={() => requestSalesSort('date')}>
                   <div className="flex items-center gap-1">
-                    Date
+                    {t.common.date}
                     {salesSort.key === 'date' ? (
                       salesSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -355,7 +357,7 @@ export default function Expenses() {
         <div className="overflow-x-auto bg-white shadow rounded-md border border-gray-200">
 
           <div className="px-4 py-3 font-bold text-gray-700">
-            Other Expenses
+            {t.common.otherExpenses}
           </div>
 
           <table className="min-w-full">
@@ -363,7 +365,7 @@ export default function Expenses() {
               <tr>
                 <th className="px-4 py-2 text-[14px] font-bold text-left rounded-tl-md cursor-pointer select-none" onClick={() => requestExpenseSort('category')}>
                   <div className="flex items-center gap-1">
-                    Category
+                    {t.common.categories}
                     {expenseSort.key === 'category' ? (
                       expenseSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -377,7 +379,7 @@ export default function Expenses() {
                 </th>
                 <th className="px-4 py-2 text-[14px] font-bold text-left cursor-pointer select-none" onClick={() => requestExpenseSort('description')}>
                   <div className="flex items-center gap-1">
-                    Description
+                    {t.common.description}
                     {expenseSort.key === 'description' ? (
                       expenseSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -391,7 +393,7 @@ export default function Expenses() {
                 </th>
                 <th className="px-4 py-2 text-[14px] font-bold text-left cursor-pointer select-none" onClick={() => requestExpenseSort('amount')}>
                   <div className="flex items-center gap-1">
-                    Amount
+                    {t.common.amount}
                     {expenseSort.key === 'amount' ? (
                       expenseSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -405,7 +407,7 @@ export default function Expenses() {
                 </th>
                 <th className="px-4 py-2 text-[14px] font-bold text-left cursor-pointer select-none" onClick={() => requestExpenseSort('date')}>
                   <div className="flex items-center gap-1">
-                    Date
+                    {t.common.date}
                     {expenseSort.key === 'date' ? (
                       expenseSort.direction === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
@@ -417,7 +419,7 @@ export default function Expenses() {
                     )}
                   </div>
                 </th>
-                <th className="px-4 py-2 text-[14px] font-bold text-right rounded-tr-md">Action</th>
+                <th className="px-4 py-2 text-[14px] font-bold text-right rounded-tr-md">{t.common.actions}</th>
               </tr>
             </thead>
 
@@ -452,7 +454,7 @@ export default function Expenses() {
                           </button>
                         </TooltipTrigger>
                         <TooltipContent className="bg-white text-black border border-zinc-200 shadow-md">
-                          Delete Expense
+                          {t.common.delete}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -465,7 +467,7 @@ export default function Expenses() {
           {/* Expenses Pagination */}
           <div className="flex justify-between items-center px-4 py-2 border-t border-zinc-200 bg-white">
             <div className="text-[13px] text-gray-700">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalExpenseItems)} of {totalExpenseItems} entries
+              {t.common.showing} {(currentPage - 1) * itemsPerPage + 1} {t.common.to} {Math.min(currentPage * itemsPerPage, totalExpenseItems)} {t.common.of} {totalExpenseItems} {t.common.entries}
             </div>
             <div className="flex items-center gap-1">
               <Button
@@ -474,7 +476,7 @@ export default function Expenses() {
                 onClick={() => setCurrentPage(prev => prev - 1)}
                 className="px-2 py-1 text-[13px]"
               >
-                Prev
+                {t.common.prev}
               </Button>
               {Array.from({ length: totalExpensePages }, (_, i) => i + 1).map((num) => (
                 <Button
@@ -492,7 +494,7 @@ export default function Expenses() {
                 onClick={() => setCurrentPage(prev => prev + 1)}
                 className="px-2 py-1 text-[13px]"
               >
-                Next
+                {t.common.next}
               </Button>
             </div>
           </div>
@@ -504,7 +506,7 @@ export default function Expenses() {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add Expense</DialogTitle>
+            <DialogTitle>{t.common.addExpense}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-3">
@@ -512,7 +514,7 @@ export default function Expenses() {
             {/* Category */}
             <div>
               <Label className="text-[14px]">
-                Category <span className="text-red-500">*</span>
+                {t.common.categories} <span className="text-red-500">*</span>
               </Label>
 
               <Select
@@ -520,7 +522,7 @@ export default function Expenses() {
                 onValueChange={(v) => setForm({ ...form, category: v })}
               >
                 <SelectTrigger className="mt-1 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none focus:border-[#27AA83]">
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder={t.common.selectCategory} />
                 </SelectTrigger>
 
                 <SelectContent className="bg-white border border-gray-200 shadow-md text-[14px]">
@@ -542,7 +544,7 @@ export default function Expenses() {
             {/* Description */}
             <div>
               <Label className="text-[14px]">
-                Description <span className="text-red-500">*</span>
+                {t.common.description} <span className="text-red-500">*</span>
               </Label>
               <Input
                 className="mt-1 border border-zinc-300 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none focus:border-[#27AA83]"
@@ -556,7 +558,7 @@ export default function Expenses() {
             {/* Amount */}
             <div>
               <Label className="text-[14px]">
-                Amount <span className="text-red-500">*</span>
+                {t.common.amount} <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="number"
@@ -571,7 +573,7 @@ export default function Expenses() {
             {/* Date */}
             <div>
               <Label className="text-[14px]">
-                Date <span className="text-red-500">*</span>
+                {t.common.date} <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="date"
@@ -588,7 +590,7 @@ export default function Expenses() {
               onClick={save}
               className="w-full bg-[#27AA83] hover:bg-[#21976f] text-white"
             >
-              Save Expense
+              {t.common.saveExpense}
             </Button>
 
           </div>
